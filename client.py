@@ -162,8 +162,3 @@ class Client:
         if self.train_model():
             self.test_model()
             self.classify_data()
-
-
-
-client = Client('http://127.0.0.1:8000')
-client.run()
