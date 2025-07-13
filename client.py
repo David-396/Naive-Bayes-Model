@@ -1,6 +1,5 @@
 import json
 import os
-
 import requests
 import validate
 from prints import print_select_target_column, print_select_data, print_select_new_df, print_select_index_column
@@ -123,7 +122,7 @@ class Client:
         res = requests.post(f'{self.server_link}/test-model')
         print(res.text)
 
-
+    # classify an input row
     def classify_data(self):
         record_vals = []
         for col in self.unique_vals.keys():

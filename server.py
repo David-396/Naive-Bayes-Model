@@ -7,7 +7,6 @@ from data_cleaning import CleanData
 from data_loader import Loader
 from naive_bayes_model import NaiveBayesBuildModel
 from predictor import Predictor
-from prints import print_select_target_column
 from static import split_df_by_precent, dict_to_str
 from fastapi.responses import PlainTextResponse, JSONResponse
 from test_accuracy import TestAccuracy

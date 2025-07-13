@@ -1,6 +1,4 @@
 import os
-from types import new_class
-
 
 def get_max_classify_from_csv(class_dict):
     cls_lst = []
