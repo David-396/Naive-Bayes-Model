@@ -152,12 +152,14 @@ class Client:
 
     # main function
     def run(self):
-        if not self.file_link:
-            self.select_file_link()
-        else:
-            if self.if_select_new_dataframe():
+        # if_exit = False
+        # while not if_exit:
+            if not self.file_link:
                 self.select_file_link()
+            else:
+                if self.if_select_new_dataframe():
+                    self.select_file_link()
 
-        if self.train_model():
-            self.test_model()
-            self.classify_data()
+            if self.train_model():
+                self.test_model()
+                self.classify_data()
