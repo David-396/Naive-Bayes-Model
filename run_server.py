@@ -1,3 +1,4 @@
+import uvicorn
 from typing import Dict, List
 from fastapi import FastAPI
 from server import Server
@@ -27,3 +28,7 @@ def test_model():
 @app.post('/classify-record')
 def classify(record : List[str]):
     return server.classify_record(record)
+
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='127.0.0.1', port=8000)
