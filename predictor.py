@@ -34,7 +34,7 @@ class Predictor:
                 classifier[target] = self.model_df[self.model_df[self.target_class_column] == target].shape[0] / self.total_records
 
                 for i in range(self.record_len_required):
-                    classifier[target] *= self.classified_data_from_model[target][self.all_columns[i]].get(record.iloc[i], 0.00001)
+                    classifier[target] *= self.classified_data_from_model[target][self.all_columns[i]].get(record.iloc[i], 0.9e00001)
 
             return classifier
 
