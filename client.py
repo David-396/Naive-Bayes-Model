@@ -73,6 +73,7 @@ class Client:
 
             if input_target_column == '':
                 input_target_column = all_columns[-1]
+
             data = {'class_column':input_target_column, 'index_column':index_column}
             # print(data)
             res = requests.post(f'{self.__server_link}/post-class-index-columns', json=data)
@@ -89,6 +90,7 @@ class Client:
         default_col = 'Index' if 'Index' in columns else None
         if default_col:
             print('\npress Enter if the index class is the "Index" column.')
+        print('press * if there is no Index column.')
 
         exit_input = False
         input_col = ''
@@ -97,6 +99,10 @@ class Client:
 
             if input_col == '' and default_col:
                 input_col = 'Index'
+                exit_input = True
+
+            elif input_col == '*':
+                input_col = None
                 exit_input = True
 
             elif validate.validate_input_options(columns, input_col):

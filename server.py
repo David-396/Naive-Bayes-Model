@@ -1,12 +1,7 @@
-import json
-from typing import Dict, Any, List
-import pandas as pd
-from fastapi import FastAPI
-import validate
 from data_cleaning import CleanData
 from data_loader import Loader
 from naive_bayes_model import NaiveBayesBuildModel
-from predictor import Predictor
+from classifier import Classifier
 from static import split_df_by_precent, dict_to_str
 from fastapi.responses import PlainTextResponse, JSONResponse
 from test_accuracy import TestAccuracy
@@ -40,10 +35,13 @@ class Server:
     # get the class column
     def get_class_index_columns(self, columns_info):
         try:
-            # print(column, type(column))
+            # print(columns_info, type(columns_info))
             clean_data = CleanData(self.__df)
-            self.__index_column = columns_info['index_column']
-            clean_data.df.set_index(self.__index_column)
+
+            if columns_info['index_column']:
+                self.__index_column = columns_info['index_column']
+                clean_data.df.set_index(self.__index_column)
+
             self.__class_column = columns_info['class_column']
             self.__unique_values_dict = self.unique_values_for_each_column()
             # print(self.unique_values_dict)
@@ -54,7 +52,12 @@ class Server:
             return PlainTextResponse(None,400)
 
     def unique_values_for_each_column(self):
-        columns = [col for col in self.__all_columns if col != self.__index_column and col != self.__class_column]
+
+        if self.__index_column:
+            columns = [col for col in self.__all_columns if col != self.__index_column and col != self.__class_column]
+        else:
+            columns = [col for col in self.__all_columns if col != self.__class_column]
+
         unique_values_dict = {col:str(list(self.__df[col].unique())) for col in columns}
         return unique_values_dict
 
@@ -68,8 +71,9 @@ class Server:
         try:
             data_for_train = split_df_by_precent(self.__df, precent_of_df_for_train)
             self.__model = NaiveBayesBuildModel(data_for_train, self.__class_column)
-            self.__classifier = Predictor(self.__df, self.__model.classified_data, self.__class_column, self.__index_column)
+            self.__classifier = Classifier(self.__df, self.__model.classified_data, self.__class_column, self.__index_column)
             return PlainTextResponse('The Model Started Successfully!', 200)
+
         except Exception as e:
             print(e)
             return PlainTextResponse('error in training model. please try again!', 400)
@@ -79,8 +83,10 @@ class Server:
         try:
             tester = TestAccuracy(self.__classifier)
             # data_for_test = split_df_by_precent(self.df, precent_of_df_for_test, from_bottom=True)
-            data_for_test = self.__df.sample(frac=1, random_state=42)
-            data_for_test = data_for_test.drop(columns=[self.__index_column])
+            data_for_test = self.__df.sample(frac=1, random_state=33)
+
+            if self.__index_column:
+                data_for_test = data_for_test.drop(columns=[self.__index_column])
             self.__model_accuracy = tester.test_accuracy(data_for_test)
             return PlainTextResponse(f'the accuracy of the model is {self.__model_accuracy}%', status_code=200)
 

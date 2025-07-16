@@ -1,5 +1,5 @@
 import validate
-from predictor import Predictor
+from classifier import Predictor
 from data_cleaning import CleanData
 from data_loader import Loader
 from naive_bayes_model import NaiveBayesBuildModel

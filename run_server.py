@@ -13,8 +13,8 @@ def post_file_to_sever(file_info_dict : Dict[str,str]):
     return server.file_link_to_clean_df(file_info_dict)
 
 @app.post('/post-class-index-columns')
-def post_class_and_index_column(columns_info_dict : Dict[str,str]):
-    # print(class_column, type(class_column))
+def post_class_and_index_column(columns_info_dict : Dict[str,object]):
+    # print(columns_info_dict, type(columns_info_dict))
     return server.get_class_index_columns(columns_info_dict)
 
 @app.post('/train-model')
