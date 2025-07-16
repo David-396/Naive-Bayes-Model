@@ -1,12 +1,4 @@
-import validate
-from classifier import Predictor
-from data_cleaning import CleanData
-from data_loader import Loader
-from naive_bayes_model import NaiveBayesBuildModel
-from prints import print_select_data, print_select_target_column, print_select_new_df
-from static import get_files_in_folder, split_df_by_precent, get_max_classify_from_record
-from test_accuracy import TestAccuracy
-
+from model.classifier import Predictor
 
 # class Menu:
 #     def __init__(self):

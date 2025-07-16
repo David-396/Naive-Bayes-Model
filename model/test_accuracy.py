@@ -1,4 +1,4 @@
-from static import get_max_classify_from_csv
+from client_side.static import get_max_classify_from_csv
 
 
 class TestAccuracy:

@@ -1,6 +1,5 @@
-from client import Client
+from client_side.client import Client
 # from menu import Menu
-import pandas as pd
 
 # main = Menu()
 # main.run()

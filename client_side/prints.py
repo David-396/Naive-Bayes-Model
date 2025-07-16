@@ -1,8 +1,8 @@
-from static import get_files_in_folder
+from client_side.static import get_files_in_folder
 
 
 def print_select_data():
-    data_files = get_files_in_folder('.\\data')
+    data_files = get_files_in_folder('../data')
     print('select the data to train the model:')
     for i in range(len(data_files)):
         print(f'\t{i+1}. {data_files[i]}')

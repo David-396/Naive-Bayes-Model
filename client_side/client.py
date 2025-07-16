@@ -1,4 +1,3 @@
-import json
 import os
 import requests
 import validate
@@ -22,13 +21,13 @@ class Client:
 
                 print_select_data()
                 file_opt = input()
-                data_files = get_files_in_folder('.\\data')
+                data_files = get_files_in_folder('../data')
                 valid_options = [str(num+1) for num in range(len(data_files))]
                 while not validate.validate_input_options(valid_options, file_opt):
                     print(f'--- wrong input please enter the number of the option. ---')
                     file_opt = input()
 
-                file = os.path.join('data', data_files[int(file_opt)-1])
+                file = os.path.join('../data', data_files[int(file_opt) - 1])
                 try:
                     res = requests.post(f'{self.__server_link}/post-file-link-from-user', json={'file_link':file}, timeout=10)
                     self.__file_link = file
@@ -42,7 +41,7 @@ class Client:
                     print('probably the server is off.\n')
                     retry = input('try again? (y/n): ')
 
-                    while not validate.validate_input_options(['y','n'],retry):
+                    while not validate.validate_input_options(['y', 'n'], retry):
                         print('--- wrong option ---')
                         retry = input()
                     if retry.lower() == 'n':

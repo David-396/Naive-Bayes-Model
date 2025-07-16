@@ -1,10 +1,10 @@
-from data_cleaning import CleanData
-from data_loader import Loader
-from naive_bayes_model import NaiveBayesBuildModel
-from classifier import Classifier
-from static import split_df_by_precent, dict_to_str
+from data_handling.data_cleaning import CleanData
+from data_handling.data_loader import Loader
+from model.naive_bayes_model import NaiveBayesBuildModel
+from model.classifier import Classifier
+from client_side.static import split_df_by_precent, dict_to_str
 from fastapi.responses import PlainTextResponse, JSONResponse
-from test_accuracy import TestAccuracy
+from model.test_accuracy import TestAccuracy
 from fastapi.encoders import jsonable_encoder
 
 
