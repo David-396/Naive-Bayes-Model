@@ -8,10 +8,10 @@ from static import get_files_in_folder, get_max_classify_from_record
 
 class Client:
     def __init__(self, server_link):
-        self.server_link = server_link
-        self.file_link = None
-        self.all_columns = None
-        self.unique_vals = None
+        self.__server_link = server_link
+        self.__file_link = None
+        self.__all_columns = None
+        self.__unique_vals = None
 
 
     # select the wanted csv file to work with - from the .\data\ directory
@@ -30,11 +30,11 @@ class Client:
 
                 file = os.path.join('data', data_files[int(file_opt)-1])
                 try:
-                    res = requests.post(f'{self.server_link}/post-file-link-from-user', json={'file_link':file}, timeout=10)
-                    self.file_link = file
-                    self.all_columns = res.json()
+                    res = requests.post(f'{self.__server_link}/post-file-link-from-user', json={'file_link':file}, timeout=10)
+                    self.__file_link = file
+                    self.__all_columns = res.json()
                     # print(columns, type(columns))
-                    self.get_index_and_target_columns_in_df(self.all_columns)
+                    self.get_index_and_target_columns_in_df(self.__all_columns)
                     if_exit = True
 
                 except requests.exceptions.RequestException as e:
@@ -62,7 +62,7 @@ class Client:
     def get_index_and_target_columns_in_df(self, all_columns:list):
         exit_loop = False
         while not exit_loop:
-            index_column = self.get_index_column(self.all_columns)
+            index_column = self.get_index_column(self.__all_columns)
 
             print_select_target_column(all_columns)
             input_target_column = input()
@@ -75,11 +75,11 @@ class Client:
                 input_target_column = all_columns[-1]
             data = {'class_column':input_target_column, 'index_column':index_column}
             # print(data)
-            res = requests.post(f'{self.server_link}/post-class-index-columns', json=data)
+            res = requests.post(f'{self.__server_link}/post-class-index-columns', json=data)
             if not res.content:
                 print('--- ERROR to post the column. please try again ---')
             else:
-                self.unique_vals = res.json()
+                self.__unique_vals = res.json()
                 exit_loop = True
 
 
@@ -110,7 +110,7 @@ class Client:
 
     # train the model from the dataframe
     def train_model(self):
-        res = requests.post(f'{self.server_link}/train-model')
+        res = requests.post(f'{self.__server_link}/train-model')
         print(res.text)
         if res.status_code == 200:
             return True
@@ -119,14 +119,14 @@ class Client:
     # test the model accuracy
     def test_model(self):
         print('testing model...')
-        res = requests.post(f'{self.server_link}/test-model')
+        res = requests.post(f'{self.__server_link}/test-model')
         print(res.text)
 
     # classify an input row
     def classify_data(self):
         record_vals = []
-        for col in self.unique_vals.keys():
-            possible_vals = self.unique_vals[col]
+        for col in self.__unique_vals.keys():
+            possible_vals = self.__unique_vals[col]
             print(f'enter a value for {col} column (possible values: {possible_vals}):')
             input_val = input()
 
@@ -136,7 +136,7 @@ class Client:
 
             record_vals.append(input_val)
 
-        res = requests.post(f'{self.server_link}/classify-record', json=record_vals)
+        res = requests.post(f'{self.__server_link}/classify-record', json=record_vals)
         classifier_result = res.json()
 
         if res.status_code == 200:
@@ -154,7 +154,7 @@ class Client:
     def run(self):
         # if_exit = False
         # while not if_exit:
-            if not self.file_link:
+            if not self.__file_link:
                 self.select_file_link()
             else:
                 if self.if_select_new_dataframe():
