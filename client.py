@@ -39,6 +39,7 @@ class Client:
 
                 except requests.exceptions.RequestException as e:
                     print(f'--- error with the connect to the server: {e} ---')
+                    print('probably the server is off.\n')
                     retry = input('try again? (y/n): ')
 
                     while not validate.validate_input_options(['y','n'],retry):
