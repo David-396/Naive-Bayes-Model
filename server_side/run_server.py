@@ -1,7 +1,7 @@
 import uvicorn
 from typing import Dict, List
 from fastapi import FastAPI
-from server import Server
+from server_side.server import Server
 
 
 app = FastAPI()

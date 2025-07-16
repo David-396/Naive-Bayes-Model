@@ -1,5 +1,5 @@
 from client_side.client import Client
-# from menu import Menu
+# from client_side.menu import Menu
 
 # main = Menu()
 # main.run()

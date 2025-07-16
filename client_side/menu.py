@@ -1,4 +1,4 @@
-from model.classifier import Predictor
+from model.classifier import Classifier
 
 # class Menu:
 #     def __init__(self):

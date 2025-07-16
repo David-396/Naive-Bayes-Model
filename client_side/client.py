@@ -1,8 +1,8 @@
 import os
 import requests
-import validate
-from prints import print_select_target_column, print_select_data, print_select_new_df, print_select_index_column
-from static import get_files_in_folder, get_max_classify_from_record
+from client_side import validate
+from client_side.prints import print_select_target_column, print_select_data, print_select_new_df, print_select_index_column
+from client_side.static import get_files_in_folder, get_max_classify_from_record
 
 
 class Client:
@@ -21,7 +21,7 @@ class Client:
 
                 print_select_data()
                 file_opt = input()
-                data_files = get_files_in_folder('../data')
+                data_files = get_files_in_folder(r'..\Naive_Bayes\data')
                 valid_options = [str(num+1) for num in range(len(data_files))]
                 while not validate.validate_input_options(valid_options, file_opt):
                     print(f'--- wrong input please enter the number of the option. ---')
