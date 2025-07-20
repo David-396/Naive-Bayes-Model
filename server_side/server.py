@@ -37,10 +37,13 @@ class Server:
         try:
             # print(columns_info, type(columns_info))
             clean_data = CleanData(self.__df)
+            clean_data.df_to_str()
 
             if columns_info['index_column']:
                 self.__index_column = columns_info['index_column']
                 clean_data.df.set_index(self.__index_column)
+
+            self.__df = clean_data.df
 
             self.__class_column = columns_info['class_column']
             self.__unique_values_dict = self.unique_values_for_each_column()
