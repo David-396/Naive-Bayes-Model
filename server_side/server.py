@@ -30,7 +30,7 @@ class Server:
             return self.__all_columns
 
         except Exception as e:
-            print(e)
+            print(f'--- error in to load the data file : {e} ---')
             return None
 
     # get the class column
@@ -52,9 +52,10 @@ class Server:
             return JSONResponse(jsonable_encoder(self.__unique_values_dict), 200)
 
         except Exception as e:
-            print(e)
+            print(f'--- error to get the class and index columns : {e} ---')
             return PlainTextResponse(None,400)
 
+    # for returning to the client, the uniques values in each column and the user will choose one each column
     def unique_values_for_each_column(self):
 
         if self.__index_column:
@@ -79,7 +80,7 @@ class Server:
             return PlainTextResponse('The Model Started Successfully!', 200)
 
         except Exception as e:
-            print(e)
+            print(f'--- error in training the model : {e} ---')
             return PlainTextResponse('error in training model. please try again!', 400)
 
     # test the model to get the success precent
@@ -92,15 +93,28 @@ class Server:
             if self.__index_column:
                 data_for_test = data_for_test.drop(columns=[self.__index_column])
             self.__model_accuracy = tester.test_accuracy(data_for_test)
-            return PlainTextResponse(f'the accuracy of the model is {self.__model_accuracy}%', status_code=200)
+            return PlainTextResponse(f'the accuracy of the model is {self.__model_accuracy}%', 200)
 
         except Exception as e:
-            return PlainTextResponse(f'error in testing data. {e}', 400)
+            print(f'--- error in testing the model : {e} ---')
+            return PlainTextResponse(f'error in testing model : {e}', 400)
+
+
+    def send_classifier_to_cls_container(self):
+        try:
+            res = requests.post(f'http://{self.classifier_url}/post-classifier-object',
+                                data=self.__classifier.classifier_to_obj())
+            print(res)
+            return res
+
+        except Exception as e:
+            print(f'--- error in sending to classifier server the classifier object : {e} ---')
+
 
     def classify_record(self, record):
         try:
-            result = requests.get(f'http://{self.classifier_url}/classify-record', json=record)
-            if "not enough values to predict" in result.json():
+            result = requests.get(f'http://{self.classifier_url}/classify-record', data=record)
+            if "not enough values to predict" in result.content():
                 return JSONResponse(result, 400)
 
             result = dict_to_str(result)
@@ -108,13 +122,10 @@ class Server:
             return JSONResponse(result, 200)
 
         except Exception as e:
-            print(f'--- {e} ---')
+            print(f'--- error in classifying the record : {e} ---')
+            return JSONResponse({'error':f'--- error in classifying the record : {e} ---'}, 400)
 
-    def send_classifier_to_cls_container(self):
-        try:
-            res = requests.post(f'http://{self.classifier_url}/post-classifier-object', json=self.__classifier)
-            return res.json()
 
-        except Exception as e:
-            print(f'--- {e} ---')
+
+
 

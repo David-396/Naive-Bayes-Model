@@ -35,7 +35,11 @@ def server_run(host='0.0.0.0', port=8000):
 
     @app.post('/test-model')
     def test_model():
-        return my_server.send_classifier_to_cls_container(), my_server.test_model_from_the_df(0.3)
+        send_cls_to_cls_contnr = my_server.send_classifier_to_cls_container()
+        print('------ send_cls_to_cls_contnr : ' , send_cls_to_cls_contnr)
+        tester = my_server.test_model_from_the_df(0.3)
+        print('------ tester :' , tester)
+        return tester
 
 
 

@@ -46,3 +46,10 @@ class Classifier:
         else:
             print(f'--- not enough values to predict, please enter {self.record_len_required} values. (entered {len(record)}) ---')
             return {"not enough values to predict":None}
+
+
+    def classifier_to_obj(self):
+        return {"model_df": self.model_df,
+                "classified_data_from_model": self.classified_data_from_model,
+                "target_class_column": self.target_class_column,
+                "target_vals": self.target_vals}

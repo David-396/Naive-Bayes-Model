@@ -9,3 +9,4 @@ WORKDIR Naive_Bayes/
 COPY . .
 
 CMD ["python", "main.py"]
+
