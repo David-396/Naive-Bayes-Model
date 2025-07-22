@@ -1,5 +1,6 @@
 import os
 import requests
+
 from client_side import validate
 from client_side.prints import print_select_target_column, print_select_data, print_select_new_df, \
     print_select_index_column, print_main_menu
@@ -178,4 +179,5 @@ class Client:
                     self.classify_data()
 
             elif opt == '2':
-                if_stay = True
+                print('bye')
+                if_stay = False

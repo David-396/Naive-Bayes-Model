@@ -1,5 +1,3 @@
-from model.classifier import Classifier
-
 # class Menu:
 #     def __init__(self):
 #         self.df = None

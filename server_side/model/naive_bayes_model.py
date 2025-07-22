@@ -1,4 +1,3 @@
-
 class NaiveBayesBuildModel:
     def __init__(self, df, target_class_column):
         self.df = df                                            # the dataframe that the model will work on

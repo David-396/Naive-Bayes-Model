@@ -1,5 +1,4 @@
-from client_side.static import get_max_classify_from_csv
-
+from server_side.server_statics.statics import get_max_classify_from_csv
 
 class TestAccuracy:
     def __init__(self, classifier):
