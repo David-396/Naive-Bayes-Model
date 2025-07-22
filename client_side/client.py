@@ -1,8 +1,9 @@
 import os
 import requests
 from client_side import validate
-from client_side.prints import print_select_target_column, print_select_data, print_select_new_df, print_select_index_column
-from client_side.static import get_files_in_folder, get_max_classify_from_record
+from client_side.prints import print_select_target_column, print_select_data, print_select_new_df, \
+    print_select_index_column, print_main_menu
+from client_side.static import get_files_in_folder, get_max_classify_from_record, get_opt
 
 
 class Client:
@@ -21,7 +22,7 @@ class Client:
 
                 print_select_data()
                 file_opt = input()
-                data_files = get_files_in_folder(r'..\Naive_Bayes\data')
+                data_files = get_files_in_folder(r'../Naive_Bayes/data')
                 valid_options = [str(num+1) for num in range(len(data_files))]
                 while not validate.validate_input_options(valid_options, file_opt):
                     print(f'--- wrong input please enter the number of the option. ---')
@@ -158,14 +159,23 @@ class Client:
 
     # main function
     def run(self):
-        # if_exit = False
-        # while not if_exit:
-            if not self.__file_link:
-                self.select_file_link()
-            else:
-                if self.if_select_new_dataframe():
-                    self.select_file_link()
+        if_stay = True
 
-            if self.train_model():
-                self.test_model()
-                self.classify_data()
+        while if_stay:
+            print_main_menu()
+            opt = get_opt(['1','2'])
+
+            if opt == '1':
+
+                if not self.__file_link:
+                    self.select_file_link()
+                else:
+                    if self.if_select_new_dataframe():
+                        self.select_file_link()
+
+                if self.train_model():
+                    self.test_model()
+                    self.classify_data()
+
+            elif opt == '2':
+                if_stay = True

@@ -1,8 +1,12 @@
 from client_side.static import get_files_in_folder
 
 
+def print_main_menu():
+    print("""select the option:
+    \t1.train and classify
+    \t2. exit""")
 def print_select_data():
-    data_files = get_files_in_folder(r'C:\Users\User\OneDrive\Desktop\Naive_Bayes\data')
+    data_files = get_files_in_folder(r'../Naive_Bayes/data')
     print('select the data to train the model:')
     for i in range(len(data_files)):
         print(f'\t{i+1}. {data_files[i]}')

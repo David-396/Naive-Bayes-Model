@@ -1,0 +1,5 @@
+# build the image of the naive bayes model
+docker build -t bayes_model_image .
+
+# run the naive bayes model client and server together - v1.0
+docker run -v "C:/Users/User/OneDrive/Desktop/Naive_Bayes/data:/Naive_Bayes/data" --name bayes_model_container -i -t bayes_model_image

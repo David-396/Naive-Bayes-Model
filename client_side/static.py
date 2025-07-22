@@ -1,4 +1,6 @@
 import os
+from client_side import validate
+
 
 def get_max_classify_from_csv(class_dict):
     cls_lst = []
@@ -24,3 +26,9 @@ def dict_to_str(dic):
     for k,v in dic.items():
         str_dic[str(k)] = str(v)
     return str_dic
+
+def get_opt(valid_opts : list):
+    opt = input()
+    while not validate.validate_input_options(valid_opts, opt):
+        opt = input('--- wrong input ---')
+    return opt
