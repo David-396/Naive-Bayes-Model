@@ -9,7 +9,7 @@ from server_side.server import Server
 def server_run(host='0.0.0.0', port=8000):
 
     app = FastAPI()
-    my_server = Server()
+    my_server = Server('localhost:5000')
 
     @app.get('/test-if-works')
     def test_if_works():
@@ -35,12 +35,15 @@ def server_run(host='0.0.0.0', port=8000):
 
     @app.post('/test-model')
     def test_model():
-        return my_server.test_model_from_the_df(0.3)
+        return my_server.send_classifier_to_cls_container(), my_server.test_model_from_the_df(0.3)
+
+
 
     @app.post('/classify-record')
     # def classify(record : List[str]):
     #     return my_server.classify_record(record)
     def classify():
         return my_server.classify_record(["1","1","1","1"])
+
 
     uvicorn.run(app, host=host, port=port)

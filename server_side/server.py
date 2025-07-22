@@ -1,14 +1,16 @@
+import requests
 from server_side.data_handling.data_cleaning import CleanData
 from server_side.data_handling.data_loader import Loader
 from server_side.model.naive_bayes_model import NaiveBayesBuildModel
-from server_side.model.classifier import Classifier
+from classifier.classifier import Classifier
 from fastapi.responses import PlainTextResponse, JSONResponse
 from server_side.model.test_accuracy import TestAccuracy
 from fastapi.encoders import jsonable_encoder
 from client_side.static import split_df_by_precent, dict_to_str
 
 class Server:
-    def __init__(self):
+    def __init__(self, classifier_url):
+        self.classifier_url = classifier_url
         self.__df = None
         self.__class_column = None
         self.__index_column = None
@@ -96,10 +98,23 @@ class Server:
             return PlainTextResponse(f'error in testing data. {e}', 400)
 
     def classify_record(self, record):
-        result = self.__classifier.record_classify(record)
-        if "not enough values to predict" in result:
-            return JSONResponse(result, 400)
+        try:
+            result = requests.get(f'http://{self.classifier_url}/classify-record', json=record)
+            if "not enough values to predict" in result.json():
+                return JSONResponse(result, 400)
 
-        result = dict_to_str(result)
-        print('result:' , result)
-        return JSONResponse(result, 200)
+            result = dict_to_str(result)
+            print('result:' , result)
+            return JSONResponse(result, 200)
+
+        except Exception as e:
+            print(f'--- {e} ---')
+
+    def send_classifier_to_cls_container(self):
+        try:
+            res = requests.post(f'http://{self.classifier_url}/post-classifier-object', json=self.__classifier)
+            return res.json()
+
+        except Exception as e:
+            print(f'--- {e} ---')
+

@@ -1,10 +1,9 @@
 # from client_side.client import Client
 from server_side.run_server import server_run
 
+def test_version_2():
+    server_run(host='0.0.0.0', port=8000)
 
-# def client_run(server_ip_port):
-#     client = Client(server_ip_port)
-#     client.run()
 
 
 if __name__ == "__main__":
