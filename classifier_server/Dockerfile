@@ -1,10 +1,10 @@
 FROM python:3.12-alpine
 
-COPY ../server_side/requirements.txt .
+COPY requirements.txt .
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-WORKDIR Naive_Bayes/classifier_server/
+WORKDIR CLS_server/
 
 COPY .. .
 

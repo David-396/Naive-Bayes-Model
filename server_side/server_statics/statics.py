@@ -6,3 +6,16 @@ def get_max_classify_from_csv(class_dict):
 
 def get_max_classify_from_record(class_dict):
     return max(class_dict, key=class_dict.get)
+
+def split_df_by_precent(dataframe, precent : (float, int), from_bottom=False):
+    if not from_bottom:
+        n = round(len(dataframe)*precent)
+        return dataframe.iloc[:n]
+    n = -round(len(dataframe)*precent)
+    return dataframe.iloc[n:]
+
+def dict_to_str(dic):
+    str_dic = {}
+    for k,v in dic.items():
+        str_dic[str(k)] = str(v)
+    return str_dic

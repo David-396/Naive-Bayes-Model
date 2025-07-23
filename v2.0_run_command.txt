@@ -1,0 +1,32 @@
+# build the image of the naive bayes model server
+docker build -t main_server__v2.0 .
+
+# build the cls server image
+docker build -t cls_server__v2.0 .
+
+# run the naive bayes model client(the interface) and server together - v2.0
+docker run -p 8001:8000 --name bayes_model_container__v2.0 -i -t main_server__v2.0
+
+# run only the server without the client
+docker run -d -p 8001:8000 --name bayes_model_container__v2.0 main_server__v2.0
+
+
+docker network create server-classifier-network
+
+cd server_side
+docker build -t main_server__v2.0 .
+cd ..
+cd classifier_server
+docker build -t cls_server__v2.0 .
+cd ..
+
+
+cd server_side
+docker build -t main_server__v2.0 .
+docker run -d -p 8002:8000 --network server-classifier-network --name main_server_container__v2.0 main_server__v2.0
+cd ..
+
+cd classifier_server
+docker build -t cls_server__v2.0 .
+docker run -d -p 8003:8001 --network server-classifier-network --name cls_container__v2.0 cls_server__v2.0
+cd ..

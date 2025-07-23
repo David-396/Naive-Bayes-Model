@@ -2,8 +2,8 @@ import json
 import uvicorn
 from typing import Dict, List
 from fastapi import FastAPI
-from server_side.server import Server
-from server_side.server_statics.statics import get_max_classify_from_record
+from server import Server
+from server_statics.statics import get_max_classify_from_record
 
 
 def server_run(classifier_ip, classifier_port, host='0.0.0.0', port=8000):

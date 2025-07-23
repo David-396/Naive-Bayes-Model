@@ -4,7 +4,7 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-WORKDIR Naive_Bayes/server_side/
+# WORKDIR Naive_Bayes_server/
 
 COPY . .
 

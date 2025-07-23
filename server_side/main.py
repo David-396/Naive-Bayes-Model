@@ -1,4 +1,4 @@
-from server_side.run_server import server_run
+from run_server import server_run
 
 
 

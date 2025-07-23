@@ -1,13 +1,13 @@
 import json
 import requests
-from server_side.data_handling.data_cleaning import CleanData
-from server_side.data_handling.data_loader import Loader
-from server_side.model.naive_bayes_model import NaiveBayesBuildModel
-from server_side.model.classifier import Classifier
+from data_handling.data_cleaning import CleanData
+from data_handling.data_loader import Loader
+from model.naive_bayes_model import NaiveBayesBuildModel
+from model.classifier import Classifier
 from fastapi.responses import PlainTextResponse, JSONResponse
-from server_side.model.test_accuracy import TestAccuracy
+from model.test_accuracy import TestAccuracy
 from fastapi.encoders import jsonable_encoder
-from client_side.static import split_df_by_precent, dict_to_str
+from server_statics.statics import split_df_by_precent, dict_to_str
 
 class Server:
     def __init__(self, classifier_ip, classifier_port):
