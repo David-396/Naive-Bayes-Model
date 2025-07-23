@@ -5,7 +5,7 @@ from server_side.model.classifier import Classifier
 from fastapi.responses import PlainTextResponse, JSONResponse
 from server_side.model.test_accuracy import TestAccuracy
 from fastapi.encoders import jsonable_encoder
-from client_side.static import split_df_by_precent, dict_to_str
+from server_side.server_statics.statics import split_df_by_precent, dict_to_str
 
 class Server:
     def __init__(self):
