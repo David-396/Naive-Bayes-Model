@@ -33,21 +33,21 @@ def server_run(classifier_ip, classifier_port, host='0.0.0.0', port=8000):
 
     @app.post('/test-model')
     def test_model():
-        send_cls_to_cls_contnr = my_server.send_classifier_to_cls_container()
-        tester = my_server.test_model_from_the_df(0.3)
-        return tester
+        accuracy_and_classifier_route = my_server.send_classifier_to_cls_container()
+        accuracy_and_classifier_route['accuracy'] = my_server.test_model_from_the_df(0.3).body
+        return accuracy_and_classifier_route
 
 
 
-    @app.post('/classify-record')
-    # def classify(record : List[str]):
-    #     return my_server.classify_record(record)
-    def classify():
-        result = my_server.classify_record(["1","1","1","1"]).body.decode()
-        result = result.replace('\\"', '"')[1:-1]
-        result = json.loads(result)
-        result = get_max_classify_from_record(result)
-        return result
+    # @app.post('/classify-record')
+    # # def classify(record : List[str]):
+    # #     return my_server.classify_record(record)
+    # def classify():
+    #     result = my_server.classify_record(["1","1","1","1"]).body.decode()
+    #     result = result.replace('\\"', '"')[1:-1]
+    #     result = json.loads(result)
+    #     result = get_max_classify_from_record(result)
+    #     return result
 
 
     uvicorn.run(app, host=host, port=port)

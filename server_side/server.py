@@ -116,12 +116,13 @@ class Server:
 
     def send_classifier_to_cls_container(self):
         try:
+            print('sending classifier to cls server...')
             classifier_obj = json.dumps(self.__classifier.classifier_to_dict())
             res = requests.post(f'http://{self.classifier_ip}:{self.classifier_port}/post-classifier_server-object',
                                 data=classifier_obj)
 
             print("classifier_server sent.")
-            return res
+            return {'classifier server route':f'http://{self.classifier_ip}:{self.classifier_port}/classify-record'}
 
         except Exception as e:
             print(f'--- error in sending to classifier_server server the classifier_server object : {e} ---')
@@ -129,7 +130,6 @@ class Server:
 
     def classify_record(self, record):
         try:
-            print('sending...')
             record = json.dumps(record)
             result = requests.get(f'http://{self.classifier_ip}:{self.classifier_port}/classify-record', data=record)
             return JSONResponse(result.json(), result.status_code)
