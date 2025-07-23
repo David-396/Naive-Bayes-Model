@@ -1,12 +1,12 @@
 from server_side.server_statics.statics import get_max_classify_from_csv
 
+
 class TestAccuracy:
     def __init__(self, classifier):
         self.classifier = classifier            # the object that will be used for classify the data
 
     def test_accuracy(self, data_for_test):
         correct_classes = data_for_test.iloc[:,-1]
-        print('yoooooo3333333333333333')
         res = self.classifier.csv_classified(data_for_test)
 
         if res:

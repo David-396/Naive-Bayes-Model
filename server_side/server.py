@@ -1,3 +1,5 @@
+import json
+
 import requests
 from server_side.data_handling.data_cleaning import CleanData
 from server_side.data_handling.data_loader import Loader
@@ -9,8 +11,9 @@ from fastapi.encoders import jsonable_encoder
 from client_side.static import split_df_by_precent, dict_to_str
 
 class Server:
-    def __init__(self, classifier_url):
-        self.classifier_url = classifier_url
+    def __init__(self, classifier_ip, classifier_port):
+        self.classifier_ip = classifier_ip
+        self.classifier_port = classifier_port
         self.__df = None
         self.__class_column = None
         self.__index_column = None
@@ -32,7 +35,6 @@ class Server:
         except Exception as e:
             print(f'--- error in to load the data file : {e} ---')
             return None
-
     # get the class column
     def get_class_index_columns(self, columns_info):
         try:
@@ -54,7 +56,6 @@ class Server:
         except Exception as e:
             print(f'--- error to get the class and index columns : {e} ---')
             return PlainTextResponse(None,400)
-
     # for returning to the client, the uniques values in each column and the user will choose one each column
     def unique_values_for_each_column(self):
 
@@ -74,9 +75,20 @@ class Server:
     # train the model with part of the dataframe
     def train_model_from_the_df(self, precent_of_df_for_train):
         try:
-            data_for_train = split_df_by_precent(self.__df, precent_of_df_for_train)
-            self.__model = NaiveBayesBuildModel(data_for_train, self.__class_column)
-            self.__classifier = Classifier(self.__df, self.__model.classified_data, self.__class_column, self.__index_column, self.__model.class_value_precent_in_df)
+            data_for_train = split_df_by_precent(self.__df,
+                                                 precent_of_df_for_train)
+
+            self.__model = NaiveBayesBuildModel(data_for_train,
+                                                self.__class_column,
+                                                self.__index_column)
+
+            self.__classifier = Classifier(self.__model.classified_data,
+                                           self.__model.target_vals,
+                                           self.__class_column,
+                                           self.__index_column,
+                                           self.__model.class_value_precent_in_df,
+                                           self.__model.all_columns)
+
             return PlainTextResponse('The Model Started Successfully!', 200)
 
         except Exception as e:
@@ -89,11 +101,12 @@ class Server:
             tester = TestAccuracy(self.__classifier)
             # data_for_test = split_df_by_precent(self.df, precent_of_df_for_test, from_bottom=True)
             data_for_test = self.__df.sample(frac=1, random_state=33)
-            print('yoo111111111111')
+
             if self.__index_column:
                 data_for_test = data_for_test.drop(columns=[self.__index_column])
-            print('yoo22222222222222222')
+
             self.__model_accuracy = tester.test_accuracy(data_for_test)
+
             return PlainTextResponse(f'the accuracy of the model is {self.__model_accuracy}%', 200)
 
         except Exception as e:
@@ -103,27 +116,23 @@ class Server:
 
     def send_classifier_to_cls_container(self):
         try:
-            classifier_obj = self.__classifier.classifier_to_obj()
-            # print(classifier_obj)
-            # res = requests.post(f'http://{self.classifier_url}/post-classifier-object',
-            #                     data=classifier_obj)
-            # print(res)
-            # return res
+            classifier_obj = json.dumps(self.__classifier.classifier_to_dict())
+            res = requests.post(f'http://{self.classifier_ip}:{self.classifier_port}/post-classifier_server-object',
+                                data=classifier_obj)
+
+            print("classifier_server sent.")
+            return res
 
         except Exception as e:
-            print(f'--- error in sending to classifier server the classifier object : {e} ---')
+            print(f'--- error in sending to classifier_server server the classifier_server object : {e} ---')
 
 
     def classify_record(self, record):
         try:
-            print('sending')
-            # result = requests.get(f'http://{self.classifier_url}/classify-record', data=record)
-            # if "not enough values to predict" in result.content():
-            #     return JSONResponse(result, 400)
-            #
-            # result = dict_to_str(result)
-            # print('result:' , result)
-            # return JSONResponse(result, 200)
+            print('sending...')
+            record = json.dumps(record)
+            result = requests.get(f'http://{self.classifier_ip}:{self.classifier_port}/classify-record', data=record)
+            return JSONResponse(result.json(), result.status_code)
 
         except Exception as e:
             print(f'--- error in classifying the record : {e} ---')

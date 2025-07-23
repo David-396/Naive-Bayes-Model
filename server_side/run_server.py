@@ -1,15 +1,15 @@
+import json
 import uvicorn
 from typing import Dict, List
 from fastapi import FastAPI
 from server_side.server import Server
+from server_side.server_statics.statics import get_max_classify_from_record
 
 
-
-
-def server_run(classifier_route, host='0.0.0.0', port=8000):
+def server_run(classifier_ip, classifier_port, host='0.0.0.0', port=8000):
 
     app = FastAPI()
-    my_server = Server(classifier_route)
+    my_server = Server(classifier_ip, classifier_port)
 
     @app.get('/test-if-works')
     def test_if_works():
@@ -34,9 +34,7 @@ def server_run(classifier_route, host='0.0.0.0', port=8000):
     @app.post('/test-model')
     def test_model():
         send_cls_to_cls_contnr = my_server.send_classifier_to_cls_container()
-        print('------ send_cls_to_cls_contnr : ' , send_cls_to_cls_contnr)
         tester = my_server.test_model_from_the_df(0.3)
-        print('------ tester :' , tester)
         return tester
 
 
@@ -45,7 +43,11 @@ def server_run(classifier_route, host='0.0.0.0', port=8000):
     # def classify(record : List[str]):
     #     return my_server.classify_record(record)
     def classify():
-        return my_server.classify_record(["1","1","1","1"])
+        result = my_server.classify_record(["1","1","1","1"]).body.decode()
+        result = result.replace('\\"', '"')[1:-1]
+        result = json.loads(result)
+        result = get_max_classify_from_record(result)
+        return result
 
 
     uvicorn.run(app, host=host, port=port)

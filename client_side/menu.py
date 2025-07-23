@@ -1,7 +1,7 @@
 # class Menu:
 #     def __init__(self):
 #         self.df = None
-#         self.classifier = None
+#         self.classifier_server = None
 #         self.model = None
 #         self.tester = None
 #         self.class_column = None
@@ -62,13 +62,13 @@
     #     data_for_train = split_df_by_precent(self.df, precent_of_df_for_train)
     #     model = NaiveBayesBuildModel(data_for_train, self.class_column)
     #     self.model = model
-    #     self.classifier = Predictor(self.df, self.model.classified_data, self.class_column)
+    #     self.classifier_server = Predictor(self.df, self.model.classified_data, self.class_column)
     #     print('\nmodel started successfully\n')
 
     # # test how the model is accurate with part of the dataframe
     # def test_model_from_the_df(self, precent_of_df_for_test):
     #     print('\ntesting model..\n')
-    #     tester = TestAccuracy(self.classifier)
+    #     tester = TestAccuracy(self.classifier_server)
     #     # data_for_test = split_df_by_precent(self.df, precent_of_df_for_test, from_bottom=True)
     #     data_for_test = self.df.sample(frac=1, random_state=33)
     #     self.accuracy = tester.test_accuracy(data_for_test)
