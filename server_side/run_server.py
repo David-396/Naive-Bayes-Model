@@ -1,62 +1,38 @@
-import json
 import uvicorn
-from typing import Dict, List
 from fastapi import FastAPI
 from server import Server
-from server_statics.statics import get_max_classify_from_record
-from pathlib import Path
-ml = {}
-def test_1():
-    test_server = Server(12, 11)
-    data_1 = "./data/DATA.csv"
-    a = test_server.file_link_to_clean_df({'file_link': data_1})
-    test_server.get_class_index_columns({"index_column":"id", "class_column":"Buy_Computer"})
-    test_server.train_model_from_the_df(0.7)
-    mod = test_server.get_model()
-    ml["mode"] = mod
 
 
-def server_run(classifier_ip, classifier_port, host='0.0.0.0', port=8000):
+def server_run(main_server_ip, main_server_port):
 
     app = FastAPI()
-    my_server = Server(classifier_ip, classifier_port)
-
-    ''' simple check if the server working '''
-    @app.get('/test-if-works')
-    def test_if_works():
-        return {'status':'working'}
-
-    ''' get the file path from the user '''
-    @app.post('/post-file-link-from-user')
-    # def post_file_to_sever(file_info_dict : Dict[str,str]):
-        # return my_server.file_link_to_clean_df(file_info_dict)
-    def post_file_to_sever():
-        return my_server.file_link_to_clean_df({'file_link':r'./data/DATA.csv'})
-
-    ''' get the index and class column from user '''
-    @app.post('/post-class-index-columns')
-    # def post_class_and_index_column(columns_info_dict : Dict[str,object]):
-    #     return my_server.get_class_index_columns(columns_info_dict)
-    def post_class_and_index_column():
-        return my_server.get_class_index_columns({"index_column":"id", "class_column":"Buy_Computer"})
-
-    ''' train the model from the dataframe '''
-    @app.post('/train-model')
-    def train_model():
-        return my_server.train_model_from_the_df(0.7)
-
-    ''' testing the model and sending to the classifier server the classifier object '''
-    @app.post('/test-model')
-    def test_model():
-        accuracy_and_classifier_route = my_server.send_classifier_to_cls_container()
-        accuracy_and_classifier_route['accuracy'] = my_server.test_model_from_the_df(0.3).body
-        return accuracy_and_classifier_route
 
     @app.get('/get-model')
     def get_model():
-        # return my_server.get_model()
-        test_1()
-        return ml["mode"]
+        server = Server()
 
-    uvicorn.run(app, host=host, port=port)
+        # load the dataframe from the link and clean it
+        print('loading and cleaning the dataframe')
+        file_path = "./data/DATA.csv"
+        server.file_link_to_clean_df({'file_link': file_path})
+
+        # get the index and class columns to order the dataframe
+        print('ordering the dataframe...')
+        class_index_columns = {"index_column": "id", "class_column": "Buy_Computer"}
+        server.get_class_index_columns(class_index_columns)
+
+        # training the model
+        print('training...')
+        server.train_model_from_the_df(0.7)
+
+        # testing the model
+        print('testing...')
+        server.test_model_from_the_df(0.3)
+
+        # sending the classifier model to the cls server
+        model = server.get_classifier
+        return model
+
+
+    uvicorn.run(app, host=main_server_ip, port=main_server_port)
 

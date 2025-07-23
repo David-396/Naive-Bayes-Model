@@ -1,5 +1,3 @@
-import json
-import requests
 from data_handling.data_cleaning import CleanData
 from data_handling.data_loader import Loader
 from model.naive_bayes_model import NaiveBayesBuildModel
@@ -7,12 +5,11 @@ from model.classifier import Classifier
 from fastapi.responses import PlainTextResponse, JSONResponse
 from model.test_accuracy import TestAccuracy
 from fastapi.encoders import jsonable_encoder
-from server_statics.statics import split_df_by_precent, dict_to_str
+from server_statics.statics import split_df_by_precent
+
 
 class Server:
-    def __init__(self, classifier_ip, classifier_port):
-        self.classifier_ip = classifier_ip
-        self.classifier_port = classifier_port
+    def __init__(self):
         self.__df = None
         self.__class_column = None
         self.__index_column = None
@@ -22,9 +19,12 @@ class Server:
         self.__model_accuracy = None
         self.__unique_values_dict = None
 
-    def get_model(self):
+    # returning the model to send to the cls server
+    @property
+    def get_classifier(self):
         return self.__classifier.classifier_to_dict()
 
+    ''' step 1 : load and clean the dataframe '''
     # get the csv file link
     def file_link_to_clean_df(self, file_info):
         try:
@@ -72,10 +72,7 @@ class Server:
         return unique_values_dict
 
 
-
-
-
-
+    ''' step 2 : train and test the model '''
     # train the model with part of the dataframe
     def train_model_from_the_df(self, precent_of_df_for_train):
         try:
@@ -116,28 +113,3 @@ class Server:
         except Exception as e:
             print(f'--- error in testing the model : {e} ---')
             return PlainTextResponse(f'error in testing model : {e}', 400)
-
-
-
-
-
-    # send the classifier object to the cls server
-    def send_classifier_to_cls_container(self):
-        try:
-            print('sending classifier to cls server...')
-            classifier_obj = json.dumps(self.__classifier.classifier_to_dict())
-            res = requests.post(f'http://{self.classifier_ip}:{self.classifier_port}/post-classifier_server-object',
-                                data=classifier_obj)
-
-            print("classifier_server sent.")
-            return {'classifier server route':f'http://{self.classifier_ip}:{self.classifier_port}/classify-record'}
-
-        except Exception as e:
-            print(f'--- error in sending to classifier_server server the classifier_server object : {e} ---')
-
-
-
-
-
-
-
