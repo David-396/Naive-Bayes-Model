@@ -12,7 +12,7 @@ class Classifier:
         self.class_value_precent_in_df = class_value_precent_in_df              # percent for each class value in the all df
 
 
-
+    # classify a csv
     def csv_classified(self, df_to_classify):
         classifier = {}
         if self.target_class_column in df_to_classify.columns:
@@ -23,8 +23,7 @@ class Classifier:
 
         return classifier
 
-
-
+    # classify a record
     def record_classify(self, record):
         # print(len(record) , self.record_len_required)
         if len(record) == self.record_len_required:
@@ -43,7 +42,7 @@ class Classifier:
             print(f'--- not enough values to predict, please enter {self.record_len_required} values. (entered {len(record)}) ---')
             return {"not enough values to predict":None}
 
-
+    # return a dictionary object of the classifier object to send it through servers
     def classifier_to_dict(self):
         return {"classified_data_from_model":self.classified_data_from_model,
                 "target_class_column":self.target_class_column,

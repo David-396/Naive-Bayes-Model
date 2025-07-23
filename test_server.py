@@ -10,6 +10,11 @@ for route in routes:
     res = requests.post(route)
     print(res.content.decode())
 
+classify_route = "http://127.0.0.1:8001/classify-record"
+data=["1" ,"3","3","3"]
+res = requests.get(classify_route, json=data)
+print(res.json())
+
 
 
 

@@ -1,11 +1,16 @@
 from run_server import server_run
 
+CLASSIFIER_IP = '127.0.0.1'
+CLASSIFIER_PORT = 8001
+
+MAIN_SERVER_IP = '127.0.0.1'
+MAIN_SERVER_PORT = 8000
 
 
 # starting the server
 if __name__ == "__main__":
     try:
-        server_run(classifier_ip='127.0.0.1', classifier_port=8001, host='127.0.0.1', port=8000)
+        server_run(classifier_ip=CLASSIFIER_IP, classifier_port=CLASSIFIER_PORT, host=MAIN_SERVER_IP, port=MAIN_SERVER_PORT)
 
     except Exception as e:
         print(f'--- {e} ---')

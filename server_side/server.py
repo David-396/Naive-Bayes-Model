@@ -22,7 +22,8 @@ class Server:
         self.__model_accuracy = None
         self.__unique_values_dict = None
 
-    def get_model(self):
+    @property
+    def model(self):
         return self.__classifier.classifier_to_dict()
 
     # get the csv file link
