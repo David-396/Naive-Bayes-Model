@@ -6,6 +6,9 @@ from starlette.responses import JSONResponse
 from classifier import Classifier
 
 
+CLASSIFIER_IP = 'localhost'
+CLASSIFIER_PORT = 8001
+
 MAIN_SERVER_IP = 'localhost'
 MAIN_SERVER_PORT = 8000
 
@@ -57,7 +60,7 @@ def classify_record(record : List[str]):
 
 
 
-uvicorn.run(app, host='127.0.0.1', port=8001)
+uvicorn.run(app, host=CLASSIFIER_IP, port=CLASSIFIER_PORT)
 
 
 

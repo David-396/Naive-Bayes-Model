@@ -1,9 +1,9 @@
 from run_server import server_run
 
-CLASSIFIER_IP = '127.0.0.1'
+CLASSIFIER_IP = 'localhost'
 CLASSIFIER_PORT = 8001
 
-MAIN_SERVER_IP = '127.0.0.1'
+MAIN_SERVER_IP = 'localhost'
 MAIN_SERVER_PORT = 8000
 
 
