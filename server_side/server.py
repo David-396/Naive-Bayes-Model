@@ -2,7 +2,7 @@ import requests
 from server_side.data_handling.data_cleaning import CleanData
 from server_side.data_handling.data_loader import Loader
 from server_side.model.naive_bayes_model import NaiveBayesBuildModel
-from classifier.classifier import Classifier
+from server_side.model.classifier import Classifier
 from fastapi.responses import PlainTextResponse, JSONResponse
 from server_side.model.test_accuracy import TestAccuracy
 from fastapi.encoders import jsonable_encoder
@@ -76,7 +76,7 @@ class Server:
         try:
             data_for_train = split_df_by_precent(self.__df, precent_of_df_for_train)
             self.__model = NaiveBayesBuildModel(data_for_train, self.__class_column)
-            self.__classifier = Classifier(self.__df, self.__model.classified_data, self.__class_column, self.__index_column)
+            self.__classifier = Classifier(self.__df, self.__model.classified_data, self.__class_column, self.__index_column, self.__model.class_value_precent_in_df)
             return PlainTextResponse('The Model Started Successfully!', 200)
 
         except Exception as e:
@@ -89,9 +89,10 @@ class Server:
             tester = TestAccuracy(self.__classifier)
             # data_for_test = split_df_by_precent(self.df, precent_of_df_for_test, from_bottom=True)
             data_for_test = self.__df.sample(frac=1, random_state=33)
-
+            print('yoo111111111111')
             if self.__index_column:
                 data_for_test = data_for_test.drop(columns=[self.__index_column])
+            print('yoo22222222222222222')
             self.__model_accuracy = tester.test_accuracy(data_for_test)
             return PlainTextResponse(f'the accuracy of the model is {self.__model_accuracy}%', 200)
 
@@ -102,10 +103,12 @@ class Server:
 
     def send_classifier_to_cls_container(self):
         try:
-            res = requests.post(f'http://{self.classifier_url}/post-classifier-object',
-                                data=self.__classifier.classifier_to_obj())
-            print(res)
-            return res
+            classifier_obj = self.__classifier.classifier_to_obj()
+            # print(classifier_obj)
+            # res = requests.post(f'http://{self.classifier_url}/post-classifier-object',
+            #                     data=classifier_obj)
+            # print(res)
+            # return res
 
         except Exception as e:
             print(f'--- error in sending to classifier server the classifier object : {e} ---')
@@ -113,13 +116,14 @@ class Server:
 
     def classify_record(self, record):
         try:
-            result = requests.get(f'http://{self.classifier_url}/classify-record', data=record)
-            if "not enough values to predict" in result.content():
-                return JSONResponse(result, 400)
-
-            result = dict_to_str(result)
-            print('result:' , result)
-            return JSONResponse(result, 200)
+            print('sending')
+            # result = requests.get(f'http://{self.classifier_url}/classify-record', data=record)
+            # if "not enough values to predict" in result.content():
+            #     return JSONResponse(result, 400)
+            #
+            # result = dict_to_str(result)
+            # print('result:' , result)
+            # return JSONResponse(result, 200)
 
         except Exception as e:
             print(f'--- error in classifying the record : {e} ---')

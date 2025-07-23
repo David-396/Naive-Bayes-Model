@@ -3,11 +3,14 @@ class NaiveBayesBuildModel:
         self.df = df                                            # the dataframe that the model will work on
         self.target_class_column = target_class_column          # the class column to ignore
         self.classified_data = self.model_train_data()          # the big dictionary with the all values in the dataframe
+        self.class_value_precent_in_df = {}
 
 
     def model_train_data(self):
         data = {}
         target_vals = self.df[self.target_class_column].unique()
+        self.class_value_precent_in_df = self.df[self.target_class_column].value_counts(normalize=True).to_dict()
+        print(self.class_value_precent_in_df)
 
         for target in target_vals:
             target_data = self.df[self.df[self.target_class_column] == target]

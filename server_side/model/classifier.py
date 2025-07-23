@@ -2,7 +2,7 @@ import pandas as pd
 
 
 class Classifier:
-    def __init__(self, model_df, classified_data_from_model, target_class_column, index_col):
+    def __init__(self, model_df, classified_data_from_model, target_class_column, index_col, class_value_precent_in_df):
         self.model_df = model_df                                                # a dataframe from the model to work with
         self.classified_data_from_model = classified_data_from_model            # the big dictionary with the all values from the dataframe
         self.target_class_column = target_class_column                          # the class column to ignore from
@@ -15,13 +15,14 @@ class Classifier:
 
         self.record_len_required = len(self.all_columns)                        # how much parameters each record should have to predict
         self.total_records = len(self.model_df)                                 # len of the dataframe
+        self.class_value_precent_in_df = class_value_precent_in_df              # percent for each class value in the all df
 
 
     def csv_classified(self, df_to_classify):
         classifier = {}
         if self.target_class_column in df_to_classify.columns:
             df_to_classify = df_to_classify.drop(columns=[self.target_class_column])
-
+        print('yoo44444444444444')
         for i in range(df_to_classify.shape[0]):
             classifier[i] = self.record_classify(df_to_classify.iloc[i])
 
@@ -34,9 +35,15 @@ class Classifier:
         if len(record) == self.record_len_required:
             record = pd.Series(record)
             classifier = {}
-
+            print('yo55555555555555555')
             for target in self.target_vals:
+                print('self.total_records',self.total_records)
+                print('self.model_df[self.model_df[self.target_class_column] == target].shape[0]',self.model_df[self.model_df[self.target_class_column] == target].shape[0])
+
                 classifier[target] = self.model_df[self.model_df[self.target_class_column] == target].shape[0] / self.total_records
+                print('------------- the original:',classifier[target], '--------the new: ', self.class_value_precent_in_df[target])
+                classifier[target] = self.class_value_precent_in_df[target]
+                # print('22222222222222222',classifier[target])
 
                 for i in range(self.record_len_required):
                     classifier[target] *= self.classified_data_from_model[target][self.all_columns[i]].get(record.iloc[i], 1e-6)

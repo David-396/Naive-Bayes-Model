@@ -6,6 +6,7 @@ class TestAccuracy:
 
     def test_accuracy(self, data_for_test):
         correct_classes = data_for_test.iloc[:,-1]
+        print('yoooooo3333333333333333')
         res = self.classifier.csv_classified(data_for_test)
 
         if res:
