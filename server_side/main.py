@@ -1,10 +1,7 @@
 from run_server import server_run
 
 
-CLS_SERVER_IP = 'localhost'
-CLS_SERVER_PORT = 8001
-
-MAIN_SERVER_IP = 'localhost'
+MAIN_SERVER_IP = 'main_server_container__v2.1'
 MAIN_SERVER_PORT = 8000
 
 
