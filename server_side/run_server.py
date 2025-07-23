@@ -4,6 +4,16 @@ from typing import Dict, List
 from fastapi import FastAPI
 from server import Server
 from server_statics.statics import get_max_classify_from_record
+from pathlib import Path
+ml = {}
+def test_1():
+    test_server = Server(12, 11)
+    data_1 = "./data/DATA.csv"
+    a = test_server.file_link_to_clean_df({'file_link': data_1})
+    test_server.get_class_index_columns({"index_column":"id", "class_column":"Buy_Computer"})
+    test_server.train_model_from_the_df(0.7)
+    mod = test_server.get_model()
+    ml["mode"] = mod
 
 
 def server_run(classifier_ip, classifier_port, host='0.0.0.0', port=8000):
@@ -21,7 +31,7 @@ def server_run(classifier_ip, classifier_port, host='0.0.0.0', port=8000):
     # def post_file_to_sever(file_info_dict : Dict[str,str]):
         # return my_server.file_link_to_clean_df(file_info_dict)
     def post_file_to_sever():
-        return my_server.file_link_to_clean_df({'file_link':r'../Naive_Bayes/server_side/data/DATA.csv'})
+        return my_server.file_link_to_clean_df({'file_link':r'./data/DATA.csv'})
 
     ''' get the index and class column from user '''
     @app.post('/post-class-index-columns')
@@ -42,5 +52,11 @@ def server_run(classifier_ip, classifier_port, host='0.0.0.0', port=8000):
         accuracy_and_classifier_route['accuracy'] = my_server.test_model_from_the_df(0.3).body
         return accuracy_and_classifier_route
 
+    @app.get('/get-model')
+    def get_model():
+        # return my_server.get_model()
+        test_1()
+        return ml["mode"]
 
     uvicorn.run(app, host=host, port=port)
+

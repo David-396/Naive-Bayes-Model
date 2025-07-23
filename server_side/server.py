@@ -22,6 +22,9 @@ class Server:
         self.__model_accuracy = None
         self.__unique_values_dict = None
 
+    def get_model(self):
+        return self.__classifier.classifier_to_dict()
+
     # get the csv file link
     def file_link_to_clean_df(self, file_info):
         try:
@@ -113,6 +116,10 @@ class Server:
         except Exception as e:
             print(f'--- error in testing the model : {e} ---')
             return PlainTextResponse(f'error in testing model : {e}', 400)
+
+
+
+
 
     # send the classifier object to the cls server
     def send_classifier_to_cls_container(self):

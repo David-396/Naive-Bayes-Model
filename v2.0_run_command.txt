@@ -30,3 +30,10 @@ cd classifier_server
 docker build -t cls_server__v2.0 .
 docker run -d -p 8003:8001 --network server-classifier-network --name cls_container__v2.0 cls_server__v2.0
 cd ..
+
+
+cls server run
+docker run -d -p8000:8001 --name imagename
+
+server run
+docker run -d --name --network image name
