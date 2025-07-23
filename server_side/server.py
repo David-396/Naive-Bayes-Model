@@ -1,5 +1,4 @@
 import json
-
 import requests
 from server_side.data_handling.data_cleaning import CleanData
 from server_side.data_handling.data_loader import Loader
@@ -35,6 +34,7 @@ class Server:
         except Exception as e:
             print(f'--- error in to load the data file : {e} ---')
             return None
+
     # get the class column
     def get_class_index_columns(self, columns_info):
         try:
@@ -56,6 +56,7 @@ class Server:
         except Exception as e:
             print(f'--- error to get the class and index columns : {e} ---')
             return PlainTextResponse(None,400)
+
     # for returning to the client, the uniques values in each column and the user will choose one each column
     def unique_values_for_each_column(self):
 
@@ -113,7 +114,7 @@ class Server:
             print(f'--- error in testing the model : {e} ---')
             return PlainTextResponse(f'error in testing model : {e}', 400)
 
-
+    # send the classifier object to the cls server
     def send_classifier_to_cls_container(self):
         try:
             print('sending classifier to cls server...')
@@ -128,15 +129,6 @@ class Server:
             print(f'--- error in sending to classifier_server server the classifier_server object : {e} ---')
 
 
-    def classify_record(self, record):
-        try:
-            record = json.dumps(record)
-            result = requests.get(f'http://{self.classifier_ip}:{self.classifier_port}/classify-record', data=record)
-            return JSONResponse(result.json(), result.status_code)
-
-        except Exception as e:
-            print(f'--- error in classifying the record : {e} ---')
-            return JSONResponse({'error':f'--- error in classifying the record : {e} ---'}, 400)
 
 
 

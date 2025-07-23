@@ -39,6 +39,7 @@ def csv_classify(csv : Dict[str,str]):
         print(f'--- error classify csv file : {e} ---')
         return JSONResponse({'error' : 'post the classifier_server first in "/post-classifier_server-object" route.'}, 400)
 
+
 @app.get('/classify-record')
 def classify_record(record : List[str]):
     try:

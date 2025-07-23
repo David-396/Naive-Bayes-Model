@@ -1,0 +1,11 @@
+FROM python:3.12-alpine
+
+COPY ../server_side/requirements.txt .
+
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+WORKDIR Naive_Bayes/classifier_server/
+
+COPY .. .
+
+CMD ["python", "classifier_route.py"]
