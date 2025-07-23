@@ -6,10 +6,10 @@ from starlette.responses import JSONResponse
 from classifier import Classifier
 
 
-CLASSIFIER_IP = 'localhost'
+CLASSIFIER_IP = 'cls_server_container__v2.0'
 CLASSIFIER_PORT = 8001
 
-MAIN_SERVER_IP = 'localhost'
+MAIN_SERVER_IP = 'main_server_container__v2.0'
 MAIN_SERVER_PORT = 8000
 
 my_classifier = None

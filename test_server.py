@@ -1,16 +1,19 @@
 import requests
 
-routes = ['http://localhost:8000/post-file-link-from-user',
-'http://localhost:8000/post-class-index-columns',
-'http://localhost:8000/train-model',
-'http://localhost:8000/test-model']
+# routes for main server - in port 8000
+routes = ['http://localhost:8002/post-file-link-from-user',
+'http://localhost:8002/post-class-index-columns',
+'http://localhost:8002/train-model',
+'http://localhost:8002/test-model']
 
 res = None
 for route in routes:
     res = requests.post(route)
     print(res.content.decode())
 
-classify_route = "http://127.0.0.1:8001/classify-record"
+
+# route for cls server - in port 8001
+classify_route = "http://127.0.0.1:8003/classify-record"
 data=["1" ,"3","3","3"]
 res = requests.get(classify_route, json=data)
 print(res.json())
