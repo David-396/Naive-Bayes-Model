@@ -1,11 +1,14 @@
 import json
-from typing import List, Dict
+from typing import List
 import requests
 import uvicorn
 from fastapi import FastAPI
 from starlette.responses import JSONResponse
 from classifier import Classifier
 
+
+CLS_SERVER_IP = 'localhost'
+CLS_SERVER_PORT = 8001
 
 MAIN_SERVER_IP = 'localhost'
 MAIN_SERVER_PORT = 8000
@@ -43,4 +46,4 @@ def get_model_from_main_server(main_server_ip, main_server_port):
                                 classifier_from_server['all_columns'])
 
 
-uvicorn.run(app, host='127.0.0.1', port=8001)
+uvicorn.run(app, host=CLS_SERVER_IP, port=CLS_SERVER_PORT)
