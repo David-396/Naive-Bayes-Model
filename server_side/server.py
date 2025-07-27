@@ -21,11 +21,11 @@ class Server:
         self.__classifier = None
         self.__model_accuracy = None
         self.__unique_values_dict = None
-
     @property
     def model(self):
         return self.__classifier.classifier_to_dict()
 
+    ''' setting the dataframe '''
     # get the csv file link
     def file_link_to_clean_df(self, file_info):
         try:
@@ -39,7 +39,7 @@ class Server:
             print(f'--- error in to load the data file : {e} ---')
             return None
 
-    # get the class column
+    # get the class and index columns
     def get_class_index_columns(self, columns_info):
         try:
             # print(columns_info, type(columns_info))
@@ -61,7 +61,7 @@ class Server:
             print(f'--- error to get the class and index columns : {e} ---')
             return PlainTextResponse(None,400)
 
-    # for returning to the client, the uniques values in each column and the user will choose one each column
+    # returning the unique values for each column
     def unique_values_for_each_column(self):
 
         if self.__index_column:
@@ -73,10 +73,7 @@ class Server:
         return unique_values_dict
 
 
-
-
-
-
+    ''' training and testing model and sending to cls server '''
     # train the model with part of the dataframe
     def train_model_from_the_df(self, precent_of_df_for_train):
         try:
@@ -117,9 +114,6 @@ class Server:
         except Exception as e:
             print(f'--- error in testing the model : {e} ---')
             return PlainTextResponse(f'error in testing model : {e}', 400)
-
-
-
 
 
     # send the classifier object to the cls server

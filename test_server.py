@@ -1,6 +1,6 @@
 import requests
 
-# routes for main server - in port 8000
+# routes for main server - in port 8000 (8002:8000)
 routes = ['http://localhost:8002/post-file-link-from-user',
 'http://localhost:8002/post-class-index-columns',
 'http://localhost:8002/train-model',
@@ -12,7 +12,7 @@ for route in routes:
     print(res.content.decode())
 
 
-# route for cls server - in port 8001
+# route for cls server - in port 8001 (8003:8001)
 classify_route = "http://127.0.0.1:8003/classify-record"
 data=["1" ,"3","3","3"]
 res = requests.get(classify_route, json=data)

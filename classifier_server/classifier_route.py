@@ -16,7 +16,7 @@ my_classifier = None
 app = FastAPI()
 
 
-
+# getting the classifier object and save it
 @app.post('/post-classifier_server-object')
 def post_classifier_object(classifier : Dict[str,object]):
     try:
@@ -34,7 +34,7 @@ def post_classifier_object(classifier : Dict[str,object]):
         print(f'--- error in post the classifier_server object : {e} ---')
         return JSONResponse({'error':f'--- error in post the classifier_server object : {e} ---'}, 400)
 
-
+# classify a csv
 @app.get('/csv-classify')
 def csv_classify(csv : Dict[str,str]):
     try:
@@ -45,7 +45,7 @@ def csv_classify(csv : Dict[str,str]):
         print(f'--- error classify csv file : {e} ---')
         return JSONResponse({'error' : 'post the classifier_server first in "/post-classifier_server-object" route.'}, 400)
 
-
+# classify a record input
 @app.get('/classify-record')
 def classify_record(record : List[str]):
     try:

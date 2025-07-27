@@ -5,17 +5,14 @@ class NaiveBayesBuildModel:
         self.total_records = len(df)                            # number of all records in df
         self.class_value_precent_in_df = {}                     # how much each class value in the df in percents
         self.target_vals = list(self.df[self.target_class_column].unique())           # all the values in the class column
-        self.index_column = index_column
+        self.index_column = index_column                        # the index column to ignore
 
-        # if index_column:
         self.all_columns = [col for col in self.df.columns if col != self.target_class_column and col != index_column]      # all the columns except the index and class columns, if index
-        # else:
-        #     self.all_columns = [col for col in self.df.columns if col != self.target_class_column]
 
         self.classified_data = self.model_train_data()          # the big dictionary with the all values in the dataframe
 
 
-
+    # train the model from the dataframe
     def model_train_data(self):
         data = {}
 
