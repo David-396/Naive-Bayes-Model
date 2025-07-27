@@ -1,0 +1,11 @@
+docker network create server-classifier-network
+
+cd server_side
+docker build -t main_server__v2.1 .
+docker run -d --network server-classifier-network --name main_server_container__v2.1 main_server__v2.1
+cd ..
+
+cd classifier_server
+docker build -t cls_server__v2.1 .
+docker run -d -p 8003:8001 --network server-classifier-network --name cls_server_container__v2.1 cls_server__v2.1
+cd ..
