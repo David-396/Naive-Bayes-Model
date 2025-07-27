@@ -5,7 +5,7 @@ class Classifier:
     def __init__(self, classified_data_from_model, target_vals, target_class_column, index_col, class_value_precent_in_df, all_columns):
         self.classified_data_from_model = classified_data_from_model            # the big dictionary with the all values from the dataframe
         self.target_class_column = target_class_column                          # the class column to ignore from
-        self.index_col = index_col
+        self.index_col = index_col                                              # the index column to ignore
         self.target_vals = target_vals                                          # all the unique values of the class column
         self.all_columns = all_columns                                          # all columns in the dataframe except class, index cols
         self.record_len_required = len(self.all_columns)                        # how much parameters each record should have to predict

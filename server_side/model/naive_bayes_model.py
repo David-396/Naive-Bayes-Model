@@ -7,10 +7,7 @@ class NaiveBayesBuildModel:
         self.target_vals = list(self.df[self.target_class_column].unique())           # all the values in the class column
         self.index_column = index_column                        # the index column to ignore
 
-        # if index_column:
         self.all_columns = [col for col in self.df.columns if col != self.target_class_column and col != index_column]      # all the columns except the index and class columns, if index
-        # else:
-        #     self.all_columns = [col for col in self.df.columns if col != self.target_class_column]
 
         self.classified_data = self.model_train_data()          # the big dictionary with the all values in the dataframe
 

@@ -14,12 +14,14 @@ def server_run(main_server_ip, main_server_port):
 
         # load the dataframe from the link and clean it
         print('loading and cleaning the dataframe')
-        file_path = "./data/DATA.csv"
+        # file_path = "./data/DATA.csv"
+        file_path = "./data/phishing.csv"
         server.file_link_to_clean_df({'file_link': file_path})
 
         # get the index and class columns to order the dataframe
         print('ordering the dataframe...')
-        class_index_columns = {"index_column": "id", "class_column": "Buy_Computer"}
+        # class_index_columns = {"index_column": "id", "class_column": "Buy_Computer"}
+        class_index_columns = {"index_column": "Index", "class_column": "class"}
         server.get_class_index_columns(class_index_columns)
 
         # training the model
@@ -37,5 +39,5 @@ def server_run(main_server_ip, main_server_port):
         return model
 
 
-    uvicorn.run(app, host=main_server_ip, port=main_server_port)
+    uvicorn.run(app, host=main_server_ip, port=main_server_port, workers=1)
 

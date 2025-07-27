@@ -100,8 +100,8 @@ class Server:
     def test_model_from_the_df(self, precent_of_df_for_test):
         try:
             tester = TestAccuracy(self.__classifier)
-            # data_for_test = split_df_by_precent(self.df, precent_of_df_for_test, from_bottom=True)
-            data_for_test = self.__df.sample(frac=1, random_state=33)
+            data_for_test = split_df_by_precent(self.__df, precent_of_df_for_test, from_bottom=True)
+            # data_for_test = self.__df.sample(frac=1, random_state=43)
 
             if self.__index_column:
                 data_for_test = data_for_test.drop(columns=[self.__index_column])
