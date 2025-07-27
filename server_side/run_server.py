@@ -7,6 +7,7 @@ def server_run(main_server_ip, main_server_port):
 
     app = FastAPI()
 
+    # the route for the cls server to get the trained model
     @app.get('/get-model')
     def get_model():
         server = Server()

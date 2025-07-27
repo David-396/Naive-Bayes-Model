@@ -18,11 +18,11 @@ class Server:
         self.__classifier = None
         self.__model_accuracy = None
         self.__unique_values_dict = None
-
     # returning the model to send to the cls server
     @property
     def get_classifier(self):
         return self.__classifier.classifier_to_dict()
+
 
     ''' step 1 : load and clean the dataframe '''
     # get the csv file link
@@ -60,7 +60,7 @@ class Server:
             print(f'--- error to get the class and index columns : {e} ---')
             return PlainTextResponse(None,400)
 
-    # for returning to the client, the uniques values in each column and the user will choose one each column
+    # returning the columns and unique values each column
     def unique_values_for_each_column(self):
 
         if self.__index_column:

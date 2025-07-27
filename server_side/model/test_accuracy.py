@@ -5,6 +5,7 @@ class TestAccuracy:
     def __init__(self, classifier):
         self.classifier = classifier            # the object that will be used for classify the data
 
+    # testing how much the model is accurate
     def test_accuracy(self, data_for_test):
         correct_classes = data_for_test.iloc[:,-1]
         res = self.classifier.csv_classified(data_for_test)

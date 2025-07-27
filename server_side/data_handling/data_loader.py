@@ -5,7 +5,7 @@ class Loader:
         self.path = path
         self.df = self.load_data()
 
-
+    # loading the data to dataframe
     def load_data(self):
         try:
             df = pd.read_csv(self.path)
