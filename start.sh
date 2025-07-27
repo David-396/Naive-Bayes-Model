@@ -1,3 +1,4 @@
+#creating a network between the containers
 docker network create server-classifier-network
 
 # building and running the main server

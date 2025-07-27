@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from server import Server
 
-
+# running the trainer server
 def server_run(main_server_ip, main_server_port):
 
     app = FastAPI()
@@ -24,11 +24,13 @@ def server_run(main_server_ip, main_server_port):
 
         # training the model
         print('training...')
-        server.train_model_from_the_df(0.7)
+        trainer = server.train_model_from_the_df(0.7)
+        print(trainer.body.decode())
 
         # testing the model
         print('testing...')
-        server.test_model_from_the_df(0.3)
+        tester = server.test_model_from_the_df(0.3)
+        print(tester.body.decode())
 
         # sending the classifier model to the cls server
         model = server.get_classifier
