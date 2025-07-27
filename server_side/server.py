@@ -53,6 +53,7 @@ class Server:
             print(e)
             return PlainTextResponse(None,400)
 
+    # returning the unique values for each column
     def unique_values_for_each_column(self):
 
         if self.__index_column:
@@ -62,9 +63,6 @@ class Server:
 
         unique_values_dict = {col:str(list(self.__df[col].unique())) for col in columns}
         return unique_values_dict
-
-
-
 
 
 
@@ -95,6 +93,7 @@ class Server:
         except Exception as e:
             return PlainTextResponse(f'error in testing data. {e}', 400)
 
+    # classifying a record
     def classify_record(self, record):
         result = self.__classifier.record_classify(record)
         if "not enough values to predict" in result:

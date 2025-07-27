@@ -1,4 +1,4 @@
-# build the image of the naive bayes model
+# building the image
 docker build -t bayes_model_image__v1.0 .
 
 # run the naive bayes model client(the interface) and server together - v1.0

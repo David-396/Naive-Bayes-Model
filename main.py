@@ -1,10 +1,5 @@
-# from client_side.client import Client
 from server_side.run_server import server_run
 
-
-# def client_run(server_ip_port):
-#     client = Client(server_ip_port)
-#     client.run()
 
 
 if __name__ == "__main__":

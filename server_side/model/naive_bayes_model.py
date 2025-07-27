@@ -4,7 +4,7 @@ class NaiveBayesBuildModel:
         self.target_class_column = target_class_column          # the class column to ignore
         self.classified_data = self.model_train_data()          # the big dictionary with the all values in the dataframe
 
-
+    # training the model from the dataframe
     def model_train_data(self):
         data = {}
         target_vals = self.df[self.target_class_column].unique()
