@@ -1,0 +1,2 @@
+docker stop cls_server_container__v2.0
+docker stop main_server_container__v2.0
