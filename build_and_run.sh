@@ -1,0 +1,8 @@
+# building the image
+docker build -t bayes_model_image__v1.0 .
+
+# run only the server without the client
+docker run -d -p 8001:8000 --name bayes_model_container__v1.0 bayes_model_image__v1.0
+
+## run the naive bayes model client(the interface) and server together - v1.0
+#docker run -p 8001:8000 --name bayes_model_container__v1.0 -i -t bayes_model_image__v1.0
