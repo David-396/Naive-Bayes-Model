@@ -1,0 +1,2 @@
+docker start cls_server_container__v2.1
+docker start main_server_container__v2.1
