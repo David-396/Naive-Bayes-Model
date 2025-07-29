@@ -1,87 +1,73 @@
-# Naive Bayes Classifier Server
+Naive Bayes Classifier Server
+A FastAPI-based system that enables classification of records using a Naive Bayes model. The system is composed of two servers:
 
-מערכת מבוססת FastAPI המאפשרת סיווג (Classification) של רשומות באמצעות מודל נאיב-בייס. המערכת מורכבת משני שרתים:  
-- **Classifier Server** – אחראי לקבל בקשות לסיווג.
-- **Server Side** – אחראי להכין את הדאטה, לאמן מודל, לבדוק אותו ולהחזיר אותו ל-Classifier במידת הצורך.
+Classifier Server – responsible for receiving classification requests.
 
----
+Server Side – responsible for preparing data, training the model, evaluating it, and sending it to the classifier when needed.
 
-## 🚀 מבנה כללי
+🚀 General Structure
 Naive_Bayes/
 │
-├── classifier_server/ # שרת קבלת הבקשות לסיווג
-│ ├── classifier.py
-│ ├── classifier_route.py # הנתיב /classify-record
-│ ├── requirements.txt
-│ └── Dockerfile
+├── classifier_server/  # Classification request server
+│   ├── classifier.py
+│   ├── classifier_route.py  # The /classify-record endpoint
+│   ├── requirements.txt
+│   └── Dockerfile
 │
-├── server_side/ # שרת אימון המודל
-│ ├── data/
-│ ├── data_handling/ # טעינה, ניקוי
-│ │ ├── data_cleaning.py
-│ │ └── data_loader.py
-│ ├── model/ # מודל נאיב בייס והטסטים עליו
-│ │ ├── naive_bayes_model.py
-│ │ └── test_accuracy.py
-│ ├── server_statics/
-│ ├── run_server.py
-│ ├── main.py
-│ ├── requirements.txt
-│ └── Dockerfile
+├── server_side/  # Model training server
+│   ├── data/
+│   ├── data_handling/  # Loading and cleaning
+│   │   ├── data_cleaning.py
+│   │   └── data_loader.py
+│   ├── model/  # Naive Bayes model and accuracy tests
+│   │   ├── naive_bayes_model.py
+│   │   └── test_accuracy.py
+│   ├── server_statics/
+│   ├── run_server.py
+│   ├── main.py
+│   ├── requirements.txt
+│   └── Dockerfile
 │
 ├── test_server.py
 └── start.sh
 
 
----
+🧠 How It Works
+Step 1: Classification Request
+The client sends a POST request to the endpoint: record-classify/
+with a JSON body containing a list of values to classify.
 
-## 🧠 איך זה עובד
+Step 2: Check for Existing Model
+If a trained model already exists, the server uses it and returns the classification (the value with the highest probability).
 
-### שלב 1: בקשת סיווג
-הלקוח שולח בקשת `POST` לניתוב: record-classify/   
-עם גוף (JSON) המכיל רשימת ערכים לסיווג.
+If no model exists, the server makes a GET request to the external training server.
 
-### שלב 2: בדיקת קיום מודל
-- אם כבר קיים מודל מאומן – הסרבר משתמש בו ומחזיר את הסיווג (הערך עם ההסתברות הגבוהה ביותר).
-- אם לא קיים מודל – הסרבר מבצע **בקשת GET** לשרת החיצוני.
+Step 3: Model Training (on the Server Side)
+The second server (Server Side) loads the data (data_loader.py).
 
-### שלב 3: אימון מודל (בשרת החיצוני)
-- השרת השני (Server Side) טוען את הדאטה (`data_loader.py`)
-- מנקה אותו (`data_cleaning.py`)
-- מאמן עליו מודל נאיב-בייס (`naive_bayes_model.py`)
-- בודק את ביצועי המודל (`test_accuracy.py`)
-- מחזיר את המודל כ-**dictionary** עם הסתברויות לכל ערך אפשרי
+Cleans it (data_cleaning.py).
 
-### שלב 4: חזרה לסיווג
-- ה-Classifier מקבל את המודל, מסווג את הרשומה שנשלחה, ומחזיר את הסיווג המתאים.
+Trains a Naive Bayes model (naive_bayes_model.py).
 
----
+Tests the model’s performance (test_accuracy.py).
 
-## 🧪 בדיקות
+Returns the model as a dictionary with probabilities for each possible value.
 
-- הקובץ `test_server.py` מאפשר לבצע בדיקות של סיווג.
-- הקוד כולל בדיקות דיוק למודל המאומן.
+Step 4: Final Classification
+The Classifier receives the model, classifies the incoming record, and returns the predicted label.
 
----
+🧪 Testing
+The file test_server.py allows testing the classification functionality.
 
-## 🐳 Docker
+The code also includes accuracy tests for the trained model.
 
-לכל אחד מהשרתים יש `Dockerfile` וניתן להריץ אותם בקונטיינרים נפרדים. להרצה מהירה:
-
-```bash
+🐳 Docker
+Each server has its own Dockerfile and can be run in separate containers. For quick deployment:
 ./start.sh
 
-
-📬 דוגמה לבקשת POST
-
+📬 Example of a POST Request
 POST /classify-record
 Content-Type: application/json
-
 {
   "record": [1.2, 3.4, 5.6, 7.8, 0.9]
 }
-
-
-
-
-
