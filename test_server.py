@@ -9,6 +9,6 @@ for route in routes:
     res = requests.post(route)
     print(res.content.decode())
 
-data = ["senior","high","no","fair"]
+data = ["youth","low","yes","fair"]
 res = requests.post('http://127.0.0.1:8001/classify-record', json=data)
 print(res.json())

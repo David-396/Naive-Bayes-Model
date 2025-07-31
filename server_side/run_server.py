@@ -47,7 +47,7 @@ def server_run(host='0.0.0.0', port=8000):
     @app.post('/classify-record')
     # def classify(record : List[str]):
     #     return my_server.classify_record(record)
-    def classify():
-        return my_server.classify_record(["1","1","1","1"])
+    def classify(record : List[str]):
+        return my_server.classify_record(record)
 
     uvicorn.run(app, host=host, port=port)
