@@ -14,7 +14,7 @@ for route in routes:
 
 # route for cls server - in port 8001 (8003:8001)
 classify_route = "http://127.0.0.1:8003/classify-record"
-data=["1" ,"3","3","3"]
+data=["youth","low","yes","fair"]
 res = requests.get(classify_route, json=data)
 print(res.json())
 
