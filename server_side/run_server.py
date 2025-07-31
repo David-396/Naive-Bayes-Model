@@ -35,8 +35,8 @@ def server_run(main_server_ip, main_server_port):
         print(tester.body.decode())
 
         # sending the classifier model to the cls server
-        model = server.get_classifier
-        return model
+        classifier = server.get_classifier
+        return classifier
 
 
     uvicorn.run(app, host=main_server_ip, port=main_server_port, workers=1)
