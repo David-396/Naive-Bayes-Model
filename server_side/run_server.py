@@ -20,8 +20,8 @@ def server_run(main_server_ip, main_server_port):
 
         # get the index and class columns to order the dataframe
         print('ordering the dataframe...')
-        # class_index_columns = {"index_column": "id", "class_column": "Buy_Computer"}
-        class_index_columns = {"index_column": "Index", "class_column": "class"}
+        class_index_columns = {"index_column": "id", "class_column": "Buy_Computer"}
+        # class_index_columns = {"index_column": "Index", "class_column": "class"}
         server.get_class_index_columns(class_index_columns)
 
         # training the model

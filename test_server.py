@@ -11,8 +11,8 @@ data_for_phishing = [
     "-1", "1", "1", "-1", "-1", "0", "-1", "1", "0", "1"
 ]
 
-# res = requests.get(route, json=data_for_data)
-res = requests.get(route, json=data_for_phishing)
+res = requests.get(route, json=data_for_data)
+# res = requests.get(route, json=data_for_phishing)
 print(res.json())
 
 # test 2
@@ -23,6 +23,6 @@ data_for_phishing2 = [
 ]
 data_for_data2 =  ["senior","high","yes","fair"]
 
-# res = requests.get(route, json=data_for_data2)
-res = requests.get(route, json=data_for_phishing2)
+res = requests.get(route, json=data_for_data2)
+# res = requests.get(route, json=data_for_phishing2)
 print(res.json())
