@@ -7,7 +7,8 @@ routes = ['http://localhost:8001/post-file-link-from-user',
 
 for route in routes:
     res = requests.post(route)
-    print(res.json())
+    print(res.content.decode())
 
-res = requests.get('http://127.0.0.1:8003/classify-record', json=["senior","high","no","fair"])
+data = ["senior","high","no","fair"]
+res = requests.post('http://127.0.0.1:8001/classify-record', json=data)
 print(res.json())
